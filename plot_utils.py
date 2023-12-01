@@ -5,7 +5,8 @@ from neuromaps.datasets import fetch_fslr
 from neuromaps.parcellate import Parcellater
 
 def custom_surf_plot(data, space='fsLR', density='32k', template='inflated', cmap='coolwarm', dpi=100,
-                     parcellation=None, cbar_label=None, cbar_ticks=None, vmin=None, vmax=None):
+                     parcellation=None, cbar_label=None, cbar_ticks=None, hemi=None,
+                     vmin=None, vmax=None):
     """
     Custom surface plot in fsLR space.
     
@@ -30,6 +31,8 @@ def custom_surf_plot(data, space='fsLR', density='32k', template='inflated', cma
         Colorbar label.
     cbar_ticks: list, optional
         Colorbar ticks.
+    hemi : str, optional
+        Hemisphere to plot. Can be 'left' or 'right'.
     vmin/vmax : int, optional
         Minimun/ maximum value in the plot.
     """
@@ -70,23 +73,44 @@ def custom_surf_plot(data, space='fsLR', density='32k', template='inflated', cma
     surfaces = fetch_atlas(space, density)
     lh, rh = surfaces[template]
     
-    # Plot both hemispheres
-    fig, ax = plt.subplots(nrows=1,ncols=4,subplot_kw={'projection': '3d'}, 
-                           figsize=(12, 4), dpi=dpi)
-    
-    plot_surf(lh, l_data, threshold=-1e-14, cmap=cmap, alpha=1, view='lateral', 
-              colorbar=False, axes=ax.flat[0], vmin=vmin, vmax=vmax)
-    plot_surf(lh, l_data, threshold=-1e-14, cmap=cmap, alpha=1, view='medial', 
-              colorbar=False, axes=ax.flat[1], vmin=vmin, vmax=vmax)
+    if hemi == None:
+        # Plot both hemispheres
+        fig, ax = plt.subplots(nrows=1,ncols=4,subplot_kw={'projection': '3d'}, 
+                            figsize=(12, 4), dpi=dpi)
+        
+        plot_surf(lh, l_data, threshold=-1e-14, cmap=cmap, alpha=1, view='lateral', 
+                colorbar=False, axes=ax.flat[0], vmin=vmin, vmax=vmax)
+        plot_surf(lh, l_data, threshold=-1e-14, cmap=cmap, alpha=1, view='medial', 
+                colorbar=False, axes=ax.flat[1], vmin=vmin, vmax=vmax)
 
-    plot_surf(rh, r_data, threshold=-1e-14, cmap=cmap, alpha=1, view='lateral', 
-              colorbar=False, axes=ax.flat[2], vmin=vmin, vmax=vmax)
-    p = plot_surf(rh, r_data, threshold=-1e-14, cmap=cmap, alpha=1, view='medial', 
-                  colorbar=True, axes=ax.flat[3], vmin=vmin, vmax=vmax)
+        plot_surf(rh, r_data, threshold=-1e-14, cmap=cmap, alpha=1, view='lateral', 
+                colorbar=False, axes=ax.flat[2], vmin=vmin, vmax=vmax)
+        p = plot_surf(rh, r_data, threshold=-1e-14, cmap=cmap, alpha=1, view='medial', 
+                    colorbar=True, axes=ax.flat[3], vmin=vmin, vmax=vmax)
 
-    p.axes[-1].set_ylabel(cbar_label, fontsize=10, labelpad=0.5)
-    p.axes[-1].set_yticks([vmin, vmax])
-    p.axes[-1].set_yticklabels(cbar_ticks)
-    p.axes[-1].tick_params(labelsize=7, width=0, pad=0.1)
-    plt.subplots_adjust(wspace=-0.05)
-    p.axes[-1].set_position(p.axes[-1].get_position().translated(0.08, 0))
+        p.axes[-1].set_ylabel(cbar_label, fontsize=10, labelpad=0.5)
+        p.axes[-1].set_yticks([vmin, vmax])
+        p.axes[-1].set_yticklabels(cbar_ticks)
+        p.axes[-1].tick_params(labelsize=7, width=0, pad=0.1)
+        plt.subplots_adjust(wspace=-0.05)
+        p.axes[-1].set_position(p.axes[-1].get_position().translated(0.08, 0))
+        
+    elif hemi == 'left' or hemi == 'right':
+        # Plot one hemisphere
+        fig, ax = plt.subplots(nrows=1,ncols=2,subplot_kw={'projection': '3d'}, 
+                            figsize=(8, 4), dpi=dpi)
+        
+        h = lh if hemi == 'left' else rh
+        h_data = l_data if hemi == 'left' else r_data
+        
+        plot_surf(h, h_data, threshold=-1e-14, cmap=cmap, alpha=1, view='lateral', 
+                colorbar=False, axes=ax.flat[0], vmin=vmin, vmax=vmax)
+        p = plot_surf(h, h_data, threshold=-1e-14, cmap=cmap, alpha=1, view='medial', 
+                    colorbar=True, axes=ax.flat[1], vmin=vmin, vmax=vmax)
+        
+        p.axes[-1].set_ylabel(cbar_label, fontsize=10, labelpad=0.5)
+        p.axes[-1].set_yticks([vmin, vmax])
+        p.axes[-1].set_yticklabels(cbar_ticks)
+        p.axes[-1].tick_params(labelsize=7, width=0, pad=0.1)
+        plt.subplots_adjust(wspace=-0.05)
+        p.axes[-1].set_position(p.axes[-1].get_position().translated(0.08, 0))
