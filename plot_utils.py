@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import matplotlib.colors as mpc
 from matplotlib.cm import ColormapRegistry
 from nilearn.plotting import plot_surf
 from neuromaps.datasets import fetch_fslr
