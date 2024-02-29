@@ -8,7 +8,7 @@ def custom_surf_plot(data, space='fsLR', density='32k', template='inflated', cma
                      parcellation=None, cbar_label=None, cbar_ticks=None, hemi=None,
                      vmin=None, vmax=None):
     """
-    Custom surface plot in fsLR space.
+    Custom surface plot ROI-wise or vertex-wise data in fsLR or fsaverage space.
     
     Parameters
     ----------
@@ -114,3 +114,200 @@ def custom_surf_plot(data, space='fsLR', density='32k', template='inflated', cma
         p.axes[-1].tick_params(labelsize=7, width=0, pad=0.1)
         plt.subplots_adjust(wspace=-0.05)
         p.axes[-1].set_position(p.axes[-1].get_position().translated(0.08, 0))
+
+def sequential_blue(N=100, return_palette=False, n_colors=8):
+    """
+    Generate a sequential blue colormap.
+
+    Parameters
+    ----------
+    N : int, optional
+        Number of colors in the colormap. Default is 100.
+    return_palette : bool, optional
+        If True, return a seaborn color palette instead of a colormap. Default is False.
+    n_colors : int, optional
+        Number of colors in the palette. Only applicable if return_palette is True. Default is 8.
+
+    Returns
+    -------
+    colormap or color palette
+        A matplotlib colormap or seaborn color palette.
+
+    Examples
+    --------
+    Generate a sequential blue colormap with 50 colors:
+    >>> cmap = sequential_blue(N=50)
+
+    Generate a seaborn color palette with 5 colors:
+    >>> palette = sequential_blue(return_palette=True, n_colors=5)
+    """
+    
+    # taken from https://coolors.co/f4f5f5-e8eaed-bed5e1-93bfd5-2b7ea1-2b6178
+    clist = ["d2d6da","e8eaed","bed5e1","93bfd5","2b7ea1","2b6178"]
+    hex = [f'#{c}' for c in clist]
+    rgb = list(map(mpc.to_rgb, hex))
+    if return_palette:
+        return sns.color_palette(rgb, n_colors=n_colors)
+    else:
+        return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
+
+def sequential_green(N=100, return_palette=False, n_colors=8):
+    """
+    Generate a sequential green colormap.
+
+    Parameters
+    ----------
+    N : int, optional
+        Number of colors in the colormap. Default is 100.
+    return_palette : bool, optional
+        If True, return a seaborn color palette instead of a colormap. Default is False.
+    n_colors : int, optional
+        Number of colors in the palette. Only applicable if return_palette is True. Default is 8.
+
+    Returns
+    -------
+    colormap or color palette
+        A matplotlib colormap or seaborn color palette.
+
+    Examples
+    --------
+    Generate a sequential blue colormap with 50 colors:
+    >>> cmap = sequential_green(N=50)
+
+    Generate a seaborn color palette with 5 colors:
+    >>> palette = sequential_green(return_palette=True, n_colors=5)
+    """
+    
+    clist = ["e7f0ee","c4dcd2","a4c5b8","79aa94","4c8a70","206246","114d33","013721"]
+    hex = [f'#{c}' for c in clist]
+    rgb = list(map(mpc.to_rgb, hex))
+    if return_palette:
+        return sns.color_palette(rgb, n_colors=n_colors)
+    else:
+        return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
+
+def custom_coolwarm(N=100, return_palette=False, n_colors=8):
+    """
+    Generate an adapted version of seaborn's coolwarm colormap.
+
+    Parameters
+    ----------
+    N : int, optional
+        Number of colors in the colormap. Default is 100.
+    return_palette : bool, optional
+        If True, return a seaborn color palette instead of a colormap. Default is False.
+    n_colors : int, optional
+        Number of colors in the palette. Only applicable if return_palette is True. Default is 8.
+
+    Returns
+    -------
+    colormap or color palette
+        A matplotlib colormap or seaborn color palette.
+
+    Examples
+    --------
+    Generate a sequential blue colormap with 50 colors:
+    >>> cmap = custom_coolwarm(N=50)
+
+    Generate a seaborn color palette with 5 colors:
+    >>> palette = custom_coolwarm(return_palette=True, n_colors=5)
+    """
+        
+    clist = ["2a6179","3d758d","75aec7","c2d4dc","ebebeb","e5d3d1","ea9085","c86356","b73a2a"]
+    hex = [f'#{c}' for c in clist]
+    rgb = list(map(mpc.to_rgb, hex))
+    if return_palette:
+        return sns.color_palette(rgb, n_colors=n_colors)
+    else:
+        return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
+
+def categorical_cmap(N=None, return_palette=False, n_colors=8):
+    """
+    Create a categorical colormap.
+
+    Parameters:
+        N (int, optional): Number of colors in the colormap. If None, the number of colors is determined by the length of the input color list. Default is None.
+        return_palette (bool, optional): If True, return a color palette instead of a colormap. Default is False.
+        n_colors (int, optional): Number of colors in the returned palette. Only applicable if return_palette is True. Default is 8.
+
+    Returns:
+        matplotlib.colors.Colormap or list: If return_palette is False, returns a matplotlib colormap. If return_palette is True, returns a list of colors.
+    """
+    
+    clist = ["ea6b5d","65a488","498eab"]
+    hex = [f'#{c}' for c in clist]
+    rgb = list(map(mpc.to_rgb, hex))
+    N = len(rgb) if N==None else N
+    if return_palette:
+        return sns.color_palette(rgb, n_colors=n_colors)
+    else:
+        return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
+    
+
+def cmap_from_hex(clist, N=100, return_palette=False, n_colors=8):
+    """
+    Create a custom colormap from a list of hexadecimal color codes.
+
+    Parameters
+    ----------
+    clist : list
+        A list of hexadecimal color codes.
+    N : int, optional
+        The number of colors in the colormap. Default is 100.
+    return_palette : bool, optional
+        Whether to return the color palette as well. Default is False.
+    n_colors : int, optional
+        The number of distinct colors to extract from the colormap. Default is 8.
+
+    Returns
+    -------
+    cmap : matplotlib.colors.ListedColormap
+        The custom colormap.
+    palette : list, optional
+        The color palette extracted from the colormap, if `return_palette` is True.
+    """
+
+    hex_list = [f'#{c}' for c in clist]
+    rgb = list(map(mpc.to_rgb, hex_list))
+    if return_palette:
+        return sns.color_palette(rgb, n_colors=n_colors)
+    else:
+        return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
+
+def schaefer_cmap(include_nota=False):
+    """
+    Create a custom colormap based on the Schaefer atlas.
+
+    Parameters
+    ----------
+    include_nota : bool, optional
+        Whether to include the "None of the above" category in the colormap. 
+        Default is False.
+
+    Returns
+    -------
+    matplotlib.colors.LinearSegmentedColormap
+        The custom colormap.
+
+    """
+    
+    if include_nota:
+        rgb = np.array([(119, 17, 128),  # Vis
+                        (70, 128, 179),  # SomMot
+                        (4, 117, 14),  # DorsAttn
+                        (200, 56, 246),  # SalVentAttn
+                        (223, 249, 163),  # Limbic
+                        (232, 147, 31),  # Cont
+                        (218, 24, 24),  # Default
+                        (255, 255, 255)  # None of the above
+                        ]) / 255
+    else:
+        rgb = np.array([(119, 17, 128),  # Vis
+                        (70, 128, 179),  # SomMot
+                        (4, 117, 14),  # DorsAttn
+                        (200, 56, 246),  # SalVentAttn
+                        (223, 249, 163),  # Limbic
+                        (232, 147, 31),  # Cont
+                        (218, 24, 24)  # Default
+                        ]) / 255
+    return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=len(rgb))
