@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.colors as mpc
 from matplotlib.cm import ColormapRegistry
 from nilearn.plotting import plot_surf
-from neuromaps.datasets import fetch_fslr
+from neuromaps.datasets import fetch_atlas
 from neuromaps.parcellate import Parcellater
 
 def custom_surf_plot(data, space='fsLR', density='32k', template='inflated', cmap='coolwarm', dpi=100,
