@@ -6,6 +6,7 @@ from matplotlib.cm import ColormapRegistry
 from nilearn.plotting import plot_surf
 from neuromaps.datasets import fetch_atlas
 from neuromaps.parcellate import Parcellater
+from neuromaps.images import dlabel_to_gifti, annot_to_gifti
 
 def custom_surf_plot(data, space='fsLR', density='32k', template='inflated', cmap='coolwarm', dpi=100,
                      parcellation=None, cbar_label=None, cbar_ticks=None, hemi=None,
