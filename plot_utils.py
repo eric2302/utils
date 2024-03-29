@@ -119,6 +119,7 @@ def custom_surf_plot(data, space='fsLR', density='32k', template='inflated', cma
         plt.subplots_adjust(wspace=-0.05)
         p.axes[-1].set_position(p.axes[-1].get_position().translated(0.08, 0))
 
+
 def sequential_blue(N=100, return_palette=False, n_colors=8):
     """
     Generate a sequential blue colormap.
@@ -155,6 +156,7 @@ def sequential_blue(N=100, return_palette=False, n_colors=8):
     else:
         return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
 
+
 def sequential_green(N=100, return_palette=False, n_colors=8):
     """
     Generate a sequential green colormap.
@@ -189,6 +191,7 @@ def sequential_green(N=100, return_palette=False, n_colors=8):
         return sns.color_palette(rgb, n_colors=n_colors)
     else:
         return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
+
 
 def custom_coolwarm(N=100, return_palette=False, n_colors=8):
     """
@@ -225,6 +228,43 @@ def custom_coolwarm(N=100, return_palette=False, n_colors=8):
     else:
         return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
 
+
+def divergent_inferno(N=100, return_palette=False, n_colors=8):
+    """
+    Generate a divergent colormap inspired by 'inferno' cmap.
+
+    Parameters
+    ----------
+    N : int, optional
+        Number of colors in the colormap. Default is 100.
+    return_palette : bool, optional
+        If True, return a seaborn color palette instead of a colormap. Default is False.
+    n_colors : int, optional
+        Number of colors in the palette. Only applicable if return_palette is True. Default is 8.
+
+    Returns
+    -------
+    colormap or color palette
+        A matplotlib colormap or seaborn color palette.
+
+    Examples
+    --------
+    Generate a sequential blue colormap with 50 colors:
+    >>> cmap = divergent_inferno(N=50)
+
+    Generate a seaborn color palette with 5 colors:
+    >>> palette = divergent_inferno(return_palette=True, n_colors=5)
+    """
+        
+    clist = ["4b9f58","36765e","235363","163b66","08090c","312b4f","c6765e","f7a96d","ffde65"]
+    hex = [f'#{c}' for c in clist]
+    rgb = list(map(mpc.to_rgb, hex))
+    if return_palette:
+        return sns.color_palette(rgb, n_colors=n_colors)
+    else:
+        return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
+
+
 def categorical_cmap(N=None, return_palette=False, n_colors=8):
     """
     Create a categorical colormap.
@@ -246,7 +286,29 @@ def categorical_cmap(N=None, return_palette=False, n_colors=8):
         return sns.color_palette(rgb, n_colors=n_colors)
     else:
         return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
+      
+
+def categorical_cmap(N=None, return_palette=False, n_colors=8):
+    """
+    Create a categorical colormap.
+
+    Parameters:
+        N (int, optional): Number of colors in the colormap. If None, the number of colors is determined by the length of the input color list. Default is None.
+        return_palette (bool, optional): If True, return a color palette instead of a colormap. Default is False.
+        n_colors (int, optional): Number of colors in the returned palette. Only applicable if return_palette is True. Default is 8.
+
+    Returns:
+        matplotlib.colors.Colormap or list: If return_palette is False, returns a matplotlib colormap. If return_palette is True, returns a list of colors.
+    """
     
+    clist = ["ea6b5d","65a488","498eab"]
+    hex = [f'#{c}' for c in clist]
+    rgb = list(map(mpc.to_rgb, hex))
+    N = len(rgb) if N==None else N
+    if return_palette:
+        return sns.color_palette(rgb, n_colors=n_colors)
+    else:
+        return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
 
 def cmap_from_hex(clist, N=100, return_palette=False, n_colors=8):
     """
@@ -277,6 +339,7 @@ def cmap_from_hex(clist, N=100, return_palette=False, n_colors=8):
         return sns.color_palette(rgb, n_colors=n_colors)
     else:
         return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
+
 
 def schaefer_cmap(include_nota=False):
     """
