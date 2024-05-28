@@ -292,7 +292,7 @@ def divergent_green_orange(N=100, return_palette=False, n_colors=8):
     >>> palette = divergent_green_orange(return_palette=True, n_colors=5)
     """
         
-    clist = ["0c6c55","308675","53a094","97bdb7","dbdbdb","e5ceb0","f0c086","fab35b","fa9457"]
+    clist = ["0c6c55","308675","53a094","97bdb7","f6f6f6","f7ccbd","f7a384","f8794b","f84f12"]
     hex = [f'#{c}' for c in clist]
     rgb = list(map(mpc.to_rgb, hex))
     if return_palette:
