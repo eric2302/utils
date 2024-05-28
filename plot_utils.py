@@ -265,6 +265,42 @@ def divergent_inferno(N=100, return_palette=False, n_colors=8):
         return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
 
 
+def divergent_green_orange(N=100, return_palette=False, n_colors=8):
+    """
+    Generate a divergent green-orange colormap.
+
+    Parameters
+    ----------
+    N : int, optional
+        Number of colors in the colormap. Default is 100.
+    return_palette : bool, optional
+        If True, return a seaborn color palette instead of a colormap. Default is False.
+    n_colors : int, optional
+        Number of colors in the palette. Only applicable if return_palette is True. Default is 8.
+
+    Returns
+    -------
+    colormap or color palette
+        A matplotlib colormap or seaborn color palette.
+
+    Examples
+    --------
+    Generate a sequential blue colormap with 50 colors:
+    >>> cmap = divergent_green_orange(N=50)
+
+    Generate a seaborn color palette with 5 colors:
+    >>> palette = divergent_green_orange(return_palette=True, n_colors=5)
+    """
+        
+    clist = ["0c6c55","308675","53a094","97bdb7","dbdbdb","e5ceb0","f0c086","fab35b","fa9457"]
+    hex = [f'#{c}' for c in clist]
+    rgb = list(map(mpc.to_rgb, hex))
+    if return_palette:
+        return sns.color_palette(rgb, n_colors=n_colors)
+    else:
+        return mpc.LinearSegmentedColormap.from_list('custom', rgb, N=N)
+
+
 def categorical_cmap(N=None, return_palette=False, n_colors=8):
     """
     Create a categorical colormap.
